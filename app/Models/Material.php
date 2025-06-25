@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Material extends Model
 {
-    protected $table = 'materiales';
+    protected $table      = 'materiales';
     protected $primaryKey = 'codigo';
-    public $incrementing = true;
-    public $timestamps = false;
+    public    $timestamps = false;
 
     protected $fillable = [
         'unidadMedida',
@@ -20,9 +19,6 @@ class Material extends Model
         'idCategoria',
     ];
 
-    /**
-     * Un material pertenece a una categoría.
-     */
     public function categoria(): BelongsTo
     {
         return $this->belongsTo(Categoria::class, 'idCategoria', 'idCategoria');
