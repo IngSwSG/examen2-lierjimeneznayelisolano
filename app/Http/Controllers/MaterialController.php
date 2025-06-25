@@ -26,5 +26,32 @@ class MaterialController extends Controller
         return response()->json($material, 201);
     }
 
-  
+   /**
+     * GET /api/materiales
+     * Devuelve todos los materiales con su categoría.
+     */
+    public function index(): JsonResponse
+    {
+        $materiales = Material::with('categoria')->get();
+        return response()->json($materiales);
+    }
+   /**
+     * PUT/PATCH /api/materiales/{codigo}
+     * Actualiza un material existente.
+     */
+    public function update(Request $request, int $codigo): JsonResponse
+    {
+        $material = Material::findOrFail($codigo);
+
+        $data = $request->validate([
+            'unidadMedida' => 'sometimes|required|string|max:255',
+            'descripcion'  => 'sometimes|required|string|max:255',
+            'ubicacion'    => 'sometimes|required|string|max:255',
+            'idCategoria'  => 'sometimes|required|integer|exists:categorias,idCategoria',
+        ]);
+
+        $material->update($data);
+
+        return response()->json($material);
+    }
 }
